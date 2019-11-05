@@ -4,134 +4,53 @@ import './style.css';
 
 const $gifHolder = $("[data-template='gifHolder']  img").clone(!0, !0)
 
-function getSearchList(params) {
-    // console.log("getSearchList");
-    // console.log(Store.search.pagination.total_count == null);
-    // console.log(Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
-    // console.log("||", Store.search.pagination.total_count == null || Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
-    // console.log(Store.search.pagination.response_pending != true)
-    // console.log("&& ", (
-    //     Store.search.pagination.total_count == null ||
-    //     Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count
-    // ) &&
-    //     Store.search.pagination.response_pending != true);
-
-    if (
-        (
-            Store.search.pagination.total_count == null ||
-            Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count
-        ) &&
-        Store.search.pagination.response_pending != true
-    ) {
-        console.log("getSearchList if ");
-
-        API.getSearchList().then((response) => {
-            Store.search.pagination.response_pending = false;
-
-            // console.log("response.data :", response.data);
-            Object.assign(Store.search.pagination, { ...response.pagination })
-            // console.log('Store', Store)
-
-            // let b = ;
-            if (response.pagination.total_count > 0) {
-                response.data.forEach(function (el, index) {
-                    // console.log('el.fixed_height_downsampled', el.images.fixed_width_downsampled.webp)
-                    let $gifHolderInstance = $gifHolder.clone(1, 1)
-                    // console.log('$gifHolderInstance  :', $gifHolderInstance)
-                    $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
-                    $gifHolderInstance.addClass('img-thumbnail')
-                    $gifHolderInstance.attr('id', el.id);
-                    // $gifHolderInstance.data('details', el )
-                    $gifHolderInstance.attr('data-details', JSON.stringify(el) )
-    
-    
-                    $('[data-result]').append($gifHolderInstance)
-                    // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
-    
-                });
-            } else {
-                $('[data-result]').append(`No result for ${Store.searchValue}`)
-            }
-            
-        }, (error)=>{
-
-            $('[data-result]').append(`Something went wrong`)
-
-        });
-        Store.search.pagination.response_pending = true;
-    }
-}
-
-function getTrendingList(params) {
-    if (
-        (Store.trending.pagination.total_count == null ||
-            Store.trending.pagination.offset + Store.trending.pagination.offset < Store.trending.pagination.total_count) &&
-        Store.trending.pagination.response_pending != true
-    ) {
-        API.getTrendingList().then((response) => {
-            Store.trending.pagination.response_pending = false;
-
-            // console.log("response.data :", response.data);
-            Object.assign(Store.trending.pagination, { ...response.pagination })
-            // console.log('Store', Store)
-
-            // let b = ;
-            response.data.forEach(function (el, index) {
-                // console.log('el.fixed_height_downsampled', el.images.fixed_width_downsampled.webp)
-                let $gifHolderInstance = $gifHolder.clone(1, 1)
-                // console.log('$gifHolderInstance  :', $gifHolderInstance)
-                $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
-                $gifHolderInstance.addClass('img-thumbnail')
-                $gifHolderInstance.attr('id', el.id);
-                // $gifHolderInstance.data('details', el )
-                $gifHolderInstance.attr('data-details', JSON.stringify(el) )
-
-                $('[data-result]').append($gifHolderInstance)
-                // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
-
+function onSucces(response, apiName) {
+    Store[apiName].pagination.response_pending = false;
+    Object.assign(Store[apiName].pagination, { ...response.pagination })
+    if (response.pagination.total_count > 0) {
+        response.data.forEach(function (el, index) {
+            let $gifHolderInstance = $gifHolder.clone(1, 1)
+            $gifHolderInstance.attr({
+                'src': el.images.fixed_width_downsampled.webp,
+                'id': el.id,
+                'data-details': JSON.stringify(el)
             });
-        }, (error)=>{
-
-            $('[data-result]').append(`Something went wrong`)
-
+            $('[data-result]').append($gifHolderInstance)
         });
-        Store.trending.pagination.response_pending = true;
+    } else {
+        $('[data-result]').append(`No result for ${Store.searchValue}`)
     }
 }
-
-
-$('body').on('click', '.gif', function () {
-    console.log(this.id);
-    Store.activeGif = this.id;
-    // API.getListItem() //not making new request as related data is already bound to 'gif'
-});
-
-getTrendingList()
-$('#inputeSearch').on('input', function (event) {
-    event.preventDefault();
-    /* Act on the event */
-    if (this.value == "") {
-        Store.activeApi = 'trending'
-    } else {
-        Store.searchValue = this.value;
-        Store.activeApi = 'search'
+function getListOf(apiName) {
+    return () => {
+        if ((
+            Store[apiName].pagination.total_count == null ||
+            Store[apiName].pagination.offset + Store[apiName].pagination.offset < Store[apiName].pagination.total_count) &&
+            Store[apiName].pagination.response_pending != true
+        ) {
+            switch (apiName) {
+                case 'search':
+                    API.getSearchList()
+                        .then(
+                            (response) => { onSucces(response, apiName) },
+                            (error) => { $('[data-result]').append(`Something went wrong`) }
+                        );
+                    break;
+                case 'trending':
+                    API.getTrendingList()
+                        .then(
+                            (response) => { onSucces(response, apiName) },
+                            (error) => { $('[data-result]').append(`Something went wrong`) }
+                        );
+                    break;
+            }
+            Store[apiName].pagination.response_pending = true;
+        }
     }
-    console.log(this.value);
+}
+var getSearchList = getListOf('search');
+var getTrendingList = getListOf('trending');
 
-});
-$('#seachGify').on('click', function (event) {
-    event.preventDefault();
-    /* Act on the event */
-    $('[data-result]').empty();
-    // Store.activeApi = 'search'
-    console.log("set active api", Store);
-
-    // getSearchList()
-    Store.search.pagination.offset=0;
-    Store.trending.pagination.offset=0;
-    getListOfActiveApi(Store.activeApi)
-
-});
 function getListOfActiveApi(activeApi) {
     switch (activeApi) {
         case 'search':
@@ -141,30 +60,42 @@ function getListOfActiveApi(activeApi) {
             getTrendingList()
             break;
         default:
-            // statements_def
+            getTrendingList()
             break;
     }
-    
 }
+
+$('#inputeSearch').on('input', function (event) {
+    event.preventDefault();
+    /* Act on the event */
+    if (this.value == "") {
+        Store.activeApi = 'trending'
+    } else {
+        Store.searchValue = this.value;
+        Store.activeApi = 'search'
+    }
+});
+$('#seachGify').on('click', function (event) {
+    event.preventDefault();
+    /* Act on the event */
+    $('[data-result]').empty();
+    Store.search.pagination.offset = 0;
+    Store.trending.pagination.offset = 0;
+    getListOfActiveApi(Store.activeApi)
+});
+
 $(window).on('scroll', function (event) {
     event.preventDefault();
     /* Act on the event */
-    // console.log('($(document).height() * 0.8) - $(window).height()):', $(this).scrollTop(), $(document).height(), $(window).height(), (($(document).height()) - $(window).height()))
     console.log(Store);
-
     if (Math.floor($(this).scrollTop()) + 10 >= (($(document).height()) - $(window).height())) {
-        // console.log('ddf($(document).height() * 0.8) - $(window).height()):', $(this).scrollTop(), $(document).height(), $(window).height(), (($(document).height()) - $(window).height()))
-        // switch (Store.activeApi) {
-        //     case 'search':
-        //         getSearchList()
-        //         break;
-        //     case 'trending':
-        //         getTrendingList()
-        //         break;
-        //     default:
-        //         // statements_def
-        //         break;
-        // }
         getListOfActiveApi(Store.activeApi)
     }
 });
+
+$('body').on('click', '.gif', function () {
+    Store.activeGif = this.id;
+    // API.getListItem() //not making new request as related data is already bound to 'gif'
+});
+
+getTrendingList()
