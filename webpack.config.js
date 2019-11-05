@@ -8,7 +8,8 @@ module.exports = {
         app: './src/index.js',
         // print: './src/API.js',
     },
-    devtool: 'inline-source-map',
+    mode:"production",
+    // devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
     },

@@ -23,9 +23,11 @@ function onSucces(response, apiName) {
 }
 function getListOf(apiName) {
     return () => {
-        if ((
-            Store[apiName].pagination.total_count == null ||
-            Store[apiName].pagination.offset + Store[apiName].pagination.offset < Store[apiName].pagination.total_count) &&
+        if (
+            (
+                Store[apiName].pagination.total_count == null ||
+                Store[apiName].pagination.offset + Store[apiName].pagination.offset < Store[apiName].pagination.total_count
+            ) &&
             Store[apiName].pagination.response_pending != true
         ) {
             switch (apiName) {
@@ -87,7 +89,7 @@ $('#seachGify').on('click', function (event) {
 $(window).on('scroll', function (event) {
     event.preventDefault();
     /* Act on the event */
-    console.log(Store);
+    // console.log(Store);
     if (Math.floor($(this).scrollTop()) + 10 >= (($(document).height()) - $(window).height())) {
         getListOfActiveApi(Store.activeApi)
     }
