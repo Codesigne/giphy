@@ -1,5 +1,7 @@
 import { Store } from './store'
 import * as API from './API'
+import MicroModal from 'micromodal';
+MicroModal.init();
 // API.getSearchList()
 
 // $(document).ready(function () {
@@ -44,6 +46,7 @@ function getSearchList(params) {
                 let $gifHolderInstance = $gifHolder.clone(1, 1)
                 // console.log('$gifHolderInstance  :', $gifHolderInstance)
                 $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
+                $gifHolderInstance.addClass('img-thumbnail')
                 $gifHolderInstance.attr('id', el.id);
 
                 $('[data-result]').append($gifHolderInstance)
@@ -74,6 +77,7 @@ function getTrendingList(params) {
                 let $gifHolderInstance = $gifHolder.clone(1, 1)
                 // console.log('$gifHolderInstance  :', $gifHolderInstance)
                 $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
+                $gifHolderInstance.addClass('img-thumbnail')
                 $gifHolderInstance.attr('id', el.id);
                 $('[data-result]').append($gifHolderInstance)
                 // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())

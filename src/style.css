@@ -3,6 +3,14 @@ body {
     height: calc(100vh + 1px);
 }
 
+/* .modal {
+    display: none;
+  }
+  
+  .modal.is-open {
+    display: block;
+  } */
+         
 .gif {
     height: 200px;
     width: 200px;
