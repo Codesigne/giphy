@@ -5,16 +5,16 @@ import './style.css';
 const $gifHolder = $("[data-template='gifHolder']  img").clone(!0, !0)
 
 function getSearchList(params) {
-    console.log("getSearchList");
-    console.log(Store.search.pagination.total_count == null);
-    console.log(Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
-    console.log("||", Store.search.pagination.total_count == null || Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
-    console.log(Store.search.pagination.response_pending != true)
-    console.log("&& ", (
-        Store.search.pagination.total_count == null ||
-        Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count
-    ) &&
-        Store.search.pagination.response_pending != true);
+    // console.log("getSearchList");
+    // console.log(Store.search.pagination.total_count == null);
+    // console.log(Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
+    // console.log("||", Store.search.pagination.total_count == null || Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
+    // console.log(Store.search.pagination.response_pending != true)
+    // console.log("&& ", (
+    //     Store.search.pagination.total_count == null ||
+    //     Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count
+    // ) &&
+    //     Store.search.pagination.response_pending != true);
 
     if (
         (
@@ -113,26 +113,45 @@ $('#seachGify').on('click', function (event) {
     // Store.activeApi = 'search'
     console.log("set active api", Store);
 
-    getSearchList()
+    // getSearchList()
+    Store.search.pagination.offset=0;
+    Store.trending.pagination.offset=0;
+    getListOfActiveApi(Store.activeApi)
+
 });
+function getListOfActiveApi(activeApi) {
+    switch (activeApi) {
+        case 'search':
+            getSearchList()
+            break;
+        case 'trending':
+            getTrendingList()
+            break;
+        default:
+            // statements_def
+            break;
+    }
+    
+}
 $(window).on('scroll', function (event) {
     event.preventDefault();
     /* Act on the event */
     // console.log('($(document).height() * 0.8) - $(window).height()):', $(this).scrollTop(), $(document).height(), $(window).height(), (($(document).height()) - $(window).height()))
-    // console.log(Store);
+    console.log(Store);
 
     if (Math.floor($(this).scrollTop()) + 10 >= (($(document).height()) - $(window).height())) {
         // console.log('ddf($(document).height() * 0.8) - $(window).height()):', $(this).scrollTop(), $(document).height(), $(window).height(), (($(document).height()) - $(window).height()))
-        switch (Store.activeApi) {
-            case 'search':
-                getSearchList()
-                break;
-            case 'trending':
-                getTrendingList()
-                break;
-            default:
-                // statements_def
-                break;
-        }
+        // switch (Store.activeApi) {
+        //     case 'search':
+        //         getSearchList()
+        //         break;
+        //     case 'trending':
+        //         getTrendingList()
+        //         break;
+        //     default:
+        //         // statements_def
+        //         break;
+        // }
+        getListOfActiveApi(Store.activeApi)
     }
 });
