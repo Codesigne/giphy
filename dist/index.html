@@ -8,31 +8,24 @@
     <title>Asset Management</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- <script src="https://unpkg.com/lodash@4.16.6"></script> -->
-    <!-- <script src="./print.bundle.js"></script> -->
 </head>
 
 <body>
     <div class="container">
-
-
         <form class="form-inline" method="get">
-            <!-- <input type="text" class="form-control mb-2 mr-sm-2" id="inputeSearch" placeholder="Jane Doe">
-            <button type="submit" id="seachGify" class="btn btn-primary mb-2">Search</button> -->
             <div class="input-group my-3">
-                <input type="text" class="form-control" placeholder="Search..."  id="inputeSearch" aria-describedby="button-addon2">
+                <input type="text" class="form-control" placeholder="Search..." id="inputeSearch"
+                    aria-describedby="button-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="submit" id="seachGify">Search</button>
+                    <button class="btn btn-outline-secondary" type="submit" id="seachGify">Search</button>
                 </div>
-              </div>
+            </div>
         </form>
         <div data-template="gifHolder" class="d-none">
             <img class="gif" data-toggle="modal" data-target="#gifDetails" src="" alt="">
         </div>
         <div data-result></div>
-
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="gifDetails" tabindex="-1" role="dialog" aria-labelledby="gifDetails" aria-hidden="true">
         <div class="modal-dialog modal-xl	" role="document">
@@ -45,11 +38,8 @@
                 </div>
                 <div class="modal-body">
                     <img src="" alt="" class="img-fluid d-block mx-auto preview">
-                    <pre>
-
-          </pre>
+                    <pre></pre>
                 </div>
-
             </div>
         </div>
     </div>
