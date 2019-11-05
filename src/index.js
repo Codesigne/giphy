@@ -33,21 +33,30 @@ function getSearchList(params) {
             // console.log('Store', Store)
 
             // let b = ;
-            response.data.forEach(function (el, index) {
-                // console.log('el.fixed_height_downsampled', el.images.fixed_width_downsampled.webp)
-                let $gifHolderInstance = $gifHolder.clone(1, 1)
-                // console.log('$gifHolderInstance  :', $gifHolderInstance)
-                $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
-                $gifHolderInstance.addClass('img-thumbnail')
-                $gifHolderInstance.attr('id', el.id);
-                // $gifHolderInstance.data('details', el )
-                $gifHolderInstance.attr('data-details', JSON.stringify(el) )
+            if (response.pagination.total_count > 0) {
+                response.data.forEach(function (el, index) {
+                    // console.log('el.fixed_height_downsampled', el.images.fixed_width_downsampled.webp)
+                    let $gifHolderInstance = $gifHolder.clone(1, 1)
+                    // console.log('$gifHolderInstance  :', $gifHolderInstance)
+                    $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
+                    $gifHolderInstance.addClass('img-thumbnail')
+                    $gifHolderInstance.attr('id', el.id);
+                    // $gifHolderInstance.data('details', el )
+                    $gifHolderInstance.attr('data-details', JSON.stringify(el) )
+    
+    
+                    $('[data-result]').append($gifHolderInstance)
+                    // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
+    
+                });
+            } else {
+                $('[data-result]').append(`No result for ${Store.searchValue}`)
+            }
+            
+        }, (error)=>{
 
+            $('[data-result]').append(`Something went wrong`)
 
-                $('[data-result]').append($gifHolderInstance)
-                // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
-
-            });
         });
         Store.search.pagination.response_pending = true;
     }
@@ -81,6 +90,10 @@ function getTrendingList(params) {
                 // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
 
             });
+        }, (error)=>{
+
+            $('[data-result]').append(`Something went wrong`)
+
         });
         Store.trending.pagination.response_pending = true;
     }

@@ -11,7 +11,7 @@ export function getSearchList(argument) {
 
 export function getTrendingList(argument) {
 	return $.ajax({
-		url: `${baseUrl}/trending?api_key=${api_key}&q=prafull&limit=10&offset=${Store.trending.pagination.offset + 5}`,
+		url: `${baseUrl}/trending?api_key=${api_key}&q=prafull&limit=5&offset=${Store.trending.pagination.offset + 5}`,
 	})
 }
 /**
