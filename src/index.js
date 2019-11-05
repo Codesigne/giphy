@@ -48,6 +48,9 @@ function getSearchList(params) {
                 $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
                 $gifHolderInstance.addClass('img-thumbnail')
                 $gifHolderInstance.attr('id', el.id);
+                // $gifHolderInstance.data('details', el )
+                $gifHolderInstance.attr('data-details', JSON.stringify(el) )
+
 
                 $('[data-result]').append($gifHolderInstance)
                 // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
@@ -79,6 +82,9 @@ function getTrendingList(params) {
                 $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
                 $gifHolderInstance.addClass('img-thumbnail')
                 $gifHolderInstance.attr('id', el.id);
+                // $gifHolderInstance.data('details', el )
+                $gifHolderInstance.attr('data-details', JSON.stringify(el) )
+
                 $('[data-result]').append($gifHolderInstance)
                 // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
 
