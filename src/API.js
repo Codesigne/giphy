@@ -14,3 +14,9 @@ export function getTrendingList(argument) {
 		url: `${baseUrl}/trending?api_key=${api_key}&q=prafull&limit=10&offset=${Store.trending.pagination.offset + 5}`,
 	})
 }
+export function getListItem(argument) {
+	return $.ajax({
+		url: `${baseUrl}/${Store.activeGif}?api_key=${api_key}`,
+	})
+}
+

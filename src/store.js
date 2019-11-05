@@ -1,6 +1,7 @@
 export var Store = {
+    activeGif:"",
     searchValue:"",
-	activeApi:'search',
+	activeApi:'trending',
     trending: {
         pagination: {
             // limit:2null,

@@ -9,17 +9,18 @@ const $gifHolder = $("[data-template='gifHolder']  img").clone(!0, !0)
 // console.log('Store', Store)
 
 // });
+
 function getSearchList(params) {
     console.log("getSearchList");
-    console.log(Store.search.pagination.total_count == null );
-    console.log( Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
-    console.log("||" , Store.search.pagination.total_count == null || Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
-    console.log( Store.search.pagination.response_pending != true)
-console.log("&& " ,     (
-    Store.search.pagination.total_count == null ||
-    Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count
-) &&
-Store.search.pagination.response_pending != true);
+    console.log(Store.search.pagination.total_count == null);
+    console.log(Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
+    console.log("||", Store.search.pagination.total_count == null || Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count);
+    console.log(Store.search.pagination.response_pending != true)
+    console.log("&& ", (
+        Store.search.pagination.total_count == null ||
+        Store.search.pagination.offset + Store.search.pagination.offset < Store.search.pagination.total_count
+    ) &&
+        Store.search.pagination.response_pending != true);
 
     if (
         (
@@ -43,6 +44,8 @@ Store.search.pagination.response_pending != true);
                 let $gifHolderInstance = $gifHolder.clone(1, 1)
                 // console.log('$gifHolderInstance  :', $gifHolderInstance)
                 $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
+                $gifHolderInstance.attr('id', el.id);
+
                 $('[data-result]').append($gifHolderInstance)
                 // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
 
@@ -71,6 +74,7 @@ function getTrendingList(params) {
                 let $gifHolderInstance = $gifHolder.clone(1, 1)
                 // console.log('$gifHolderInstance  :', $gifHolderInstance)
                 $gifHolderInstance.attr('src', el.images.fixed_width_downsampled.webp);
+                $gifHolderInstance.attr('id', el.id);
                 $('[data-result]').append($gifHolderInstance)
                 // console.log('($(document).height() * 0.8) - $(window).height()):', $(document).height(), $(window).height())
 
@@ -81,7 +85,11 @@ function getTrendingList(params) {
 }
 
 
-
+$('body').on('click', '.gif', function () {
+    console.log(this.id);
+    Store.activeGif = this.id;
+    API.getListItem()
+});
 // import _ from 'lodash';
 import './style.css';
 // getSearchList()
@@ -90,7 +98,12 @@ getTrendingList()
 $('#inputeSearch').on('input', function (event) {
     event.preventDefault();
     /* Act on the event */
-    Store.searchValue = this.value;
+    if (this.value == "") {
+        Store.activeApi = 'trending'
+    } else {
+        Store.searchValue = this.value;
+        Store.activeApi = 'search'
+    }
     console.log(this.value);
 
 });
@@ -98,7 +111,7 @@ $('#seachGify').on('click', function (event) {
     event.preventDefault();
     /* Act on the event */
     $('[data-result]').empty();
-    Store.activeApi = 'search'
+    // Store.activeApi = 'search'
     console.log("set active api", Store);
 
     getSearchList()
@@ -107,6 +120,7 @@ $(window).on('scroll', function (event) {
     event.preventDefault();
     /* Act on the event */
     // console.log('($(document).height() * 0.8) - $(window).height()):', $(this).scrollTop(), $(document).height(), $(window).height(), (($(document).height()) - $(window).height()))
+    // console.log(Store);
 
     if (Math.floor($(this).scrollTop()) + 10 >= (($(document).height()) - $(window).height())) {
         // console.log('ddf($(document).height() * 0.8) - $(window).height()):', $(this).scrollTop(), $(document).height(), $(window).height(), (($(document).height()) - $(window).height()))
