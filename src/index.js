@@ -1,16 +1,8 @@
 import { Store } from './store'
 import * as API from './API'
-import MicroModal from 'micromodal';
-MicroModal.init();
-// API.getSearchList()
+import './style.css';
 
-// $(document).ready(function () {
 const $gifHolder = $("[data-template='gifHolder']  img").clone(!0, !0)
-
-// console.log("$gifHolder : ", $gifHolder);
-// console.log('Store', Store)
-
-// });
 
 function getSearchList(params) {
     console.log("getSearchList");
@@ -98,13 +90,10 @@ function getTrendingList(params) {
 $('body').on('click', '.gif', function () {
     console.log(this.id);
     Store.activeGif = this.id;
-    API.getListItem()
+    // API.getListItem() //not making new request as related data is already bound to 'gif'
 });
-// import _ from 'lodash';
-import './style.css';
-// getSearchList()
-getTrendingList()
 
+getTrendingList()
 $('#inputeSearch').on('input', function (event) {
     event.preventDefault();
     /* Act on the event */
