@@ -2,7 +2,7 @@ import { Store } from './store'
 import * as API from './API'
 import './style.css';
 
-const $gifHolder = $("[data-template='gifHolder']  img").clone(!0, !0)
+const $gifHolder = $("[data-template='gifHolder'] > div").clone(!0, !0)
 
 function onSucces(response, apiName) {
     Store[apiName].pagination.response_pending = false;
@@ -10,7 +10,7 @@ function onSucces(response, apiName) {
     if (response.pagination.total_count > 0) {
         response.data.forEach(function (el, index) {
             let $gifHolderInstance = $gifHolder.clone(1, 1)
-            $gifHolderInstance.attr({
+            $gifHolderInstance.find('img').attr({
                 'src': el.images.fixed_width_downsampled.webp,
                 'id': el.id,
                 'data-details': JSON.stringify(el)
@@ -85,12 +85,28 @@ $('#seachGify').on('click', function (event) {
     Store.trending.pagination.offset = 0;
     getListOfActiveApi(Store.activeApi)
 });
+$('#gifDetails').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    console.log("button :", button.data());
+
+    var details = button.data('details') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    console.log("details :", details);
+
+    var modal = $(this)
+    modal.find('.modal-title').text(details.title)
+    modal.find('.preview').attr('src', details.images.original.webp)
+    modal.find('pre').text(JSON.stringify(details, undefined, 2))
+
+    //   modal.find('.modal-body input').val(details)
+})
 
 $(window).on('scroll', function (event) {
     event.preventDefault();
     /* Act on the event */
     // console.log(Store);
-    if (Math.floor($(this).scrollTop()) + 10 >= (($(document).height()) - $(window).height())) {
+    if (Math.floor($(this).scrollTop()) + 100 >= (($(document).height()) - $(window).height())) {
         getListOfActiveApi(Store.activeApi)
     }
 });

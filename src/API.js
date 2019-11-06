@@ -1,7 +1,7 @@
 import { Store } from './store'
 
 const baseUrl = "https://api.giphy.com/v1/gifs";
-const api_key = "rXduKJTlpl96RvM2HsHtlvGh01YYMZD2";
+const api_key = "mP17pVxuBhxNTIg9QZqTgDK18hOvgGF5";
 
 export function getSearchList(argument) {
 	return $.ajax({
