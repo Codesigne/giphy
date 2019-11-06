@@ -15,6 +15,11 @@
   "devDependencies": {
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
+    "node-sass": "^4.13.0",
+    "popper.js": "^1.16.0",
+    "postcss-loader": "^3.0.0",
+    "precss": "^4.0.0",
+    "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
@@ -23,7 +28,6 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.15",
-    "micromodal": "^0.4.2"
+    "lodash": "^4.17.15"
   }
 }

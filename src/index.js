@@ -1,6 +1,8 @@
+// import jQuery from 'jquery'
 import { Store } from './store'
 import * as API from './API'
-import './style.css';
+import 'bootstrap';
+import './style.scss';
 
 const $gifHolder = $("[data-template='gifHolder'] > div").clone(!0, !0)
 
